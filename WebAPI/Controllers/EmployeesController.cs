@@ -35,7 +35,7 @@ namespace WebAPI.Controllers
 
         //Update 
         [HttpGet]
-        [Route("{id: Guid}")]
+        [Route("{id:Guid}")]
         public async Task<IActionResult> updateEmployee([FromRoute] Guid id)
         {
             var employee = await _db.Employees.SingleOrDefaultAsync(x => x.Id == id);
