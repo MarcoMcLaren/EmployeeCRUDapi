@@ -15,6 +15,7 @@ namespace WebAPI.Controllers
            _db = mydbcontext;
         }
 
+        //Read
         [HttpGet]
         public async Task<IActionResult> GetAllEmployees()
         {
@@ -22,6 +23,7 @@ namespace WebAPI.Controllers
             return Ok(employees);
         }
 
+        //Add
         [HttpPost]
         public async Task<IActionResult> AddEmployee([FromBody] Employee employeeRequest)
         {
@@ -29,6 +31,20 @@ namespace WebAPI.Controllers
             await _db.Employees.AddAsync(employeeRequest);
             await _db.SaveChangesAsync();
             return Ok(employeeRequest);
+        }
+
+        //Update 
+        [HttpGet]
+        [Route("{id: Guid}")]
+        public async Task<IActionResult> updateEmployee([FromRoute] Guid id)
+        {
+            var employee = await _db.Employees.SingleOrDefaultAsync(x => x.Id == id);
+
+            if(employee == null)
+            {
+                return NotFound();
+            }
+            return Ok(employee);
         }
     }
 }
