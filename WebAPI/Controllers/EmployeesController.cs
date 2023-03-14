@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
             return Ok(employeeRequest);
         }
 
-        //Update 
+        //Populate selected Update row 
         [HttpGet]
         [Route("{id:Guid}")]
         public async Task<IActionResult> updateEmployee([FromRoute] Guid id)
@@ -44,6 +44,27 @@ namespace WebAPI.Controllers
             {
                 return NotFound();
             }
+            return Ok(employee);
+        }
+
+        //officually update in database
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> officialUpdate([FromRoute] Guid id, Employee officialUpdate)
+        {
+            var employee = await _db.Employees.FindAsync(id);
+
+            if(employee == null)
+            {
+                return NotFound();
+            }
+            employee.Name = officialUpdate.Name;
+            employee.Email = officialUpdate.Email;
+            employee.Salary = officialUpdate.Salary;
+            employee.Phone = officialUpdate.Phone;
+            employee.Department = officialUpdate.Department;
+            await _db.SaveChangesAsync();
+
             return Ok(employee);
         }
     }
