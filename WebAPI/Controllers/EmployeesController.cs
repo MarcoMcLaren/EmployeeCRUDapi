@@ -67,5 +67,20 @@ namespace WebAPI.Controllers
 
             return Ok(employee);
         }
+
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> deleteEmployee([FromRoute] Guid id)
+        {
+            var employee = await _db.Employees.FindAsync(id);
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+            _db.Employees.Remove(employee);
+            await _db.SaveChangesAsync();
+            return Ok(employee);
+        }
     }
 }
